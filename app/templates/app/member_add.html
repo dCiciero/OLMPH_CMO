@@ -1,0 +1,108 @@
+{% extends 'base.html' %} {% block content %}
+<div class="card">
+  <div class="card-body">
+    {% if form %}
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          {{form.cmono.label}} {{form.cmono(size=32, class='form-control
+          form-control-sm' )}}
+        </div>
+        <div class="form-group col-md-3">
+          <!-- <label for="txt_fname">First Name</label> -->
+          {{form.firstname.label}} {{form.firstname(size=32, class='form-control
+          form-control-sm')}} {% for error in form.firstname.errors %}
+          <span class="form_error">{{ error }}</span>
+          {% endfor %}
+        </div>
+        <div class="form-group col-md-2">
+          {{form.midname.label}} {{form.midname(size=32, class='form-control
+          form-control-sm' )}}
+        </div>
+        <div class="form-group col-md-3">
+          {{form.lastname.label}} {{form.lastname(size=32, class='form-control
+          form-control-sm')}} {% for error in form.lastname.errors %}
+          <span class="form_error">{{ error }}</span>
+          {% endfor %}
+        </div>
+        <div class="form-group col-md-2"></div>
+      </div>
+      <!-- end form-row -->
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          {{form.phone1.label}} {{form.phone1(size=32, class='form-control
+          form-control-sm' )}} {% for error in form.phone1.errors %}
+          <span class="form_error">{{ error }}</span>
+          {% endfor %}
+        </div>
+        <div class="form-group col-md-3">
+          {{form.phone2.label}} {{form.phone2(size=32, class='form-control
+          form-control-sm' )}}
+        </div>
+        <div class="form-group col-md-3">
+          {{form.dob.label}} {{form.dob(size=32, class='form-control
+          form-control-sm', placeholder='Month and Date E.g. January 12' )}} {%
+          for error in form.dob.errors %}
+          <span class="form_error">{{ error }}</span>
+          {% endfor %}
+        </div>
+        <div class="form-group col-md-3">
+          {{form.date_joined.label}} {{form.date_joined(size=32,
+          class='form-control form-control-sm', placeholder='dd/mm/yyyy' )}} {%
+          for error in form.date_joined.errors %}
+          <span class="form_error">{{ error }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              {{ form.nationality.label }} {{ form.nationality(size=32,
+              class='form-control form-control-sm') }}
+            </div>
+            <div class="form-group col-md-6">
+              {% if states %} {{ form.state_of_origin.label }} {{
+              form.state_of_origin(id="drp_state", class='form-control
+              form-control-sm')}} {% for error in form.state_of_origin.errors %}
+              <span class="form_error">{{ error }}</span>
+              {% endfor %} {% endif %} {#{ form. }#} {#{
+              form.state_of_origin(class='form-control form-control-sm') }#}
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          {{ form.address.label }} {{ form.address( class='form-control
+          form-control-sm', cols="10", rows="5",draggable="false") }}
+        </div>
+      </div>
+      <!-- end form-row -->
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          {{ form.membership_status.label }} {{
+          form.membership_status(class='form-control form-control-sm') }} {% for
+          error in form.membership_status.errors %}
+          <span class="form_error">{{ error }}</span>
+          {% endfor %}
+        </div>
+        <div class="form-group col-md-4">
+          {{ form.email.label }} {{ form.email(size=32, class='form-control
+          form-control-sm') }} {% for error in form.email.errors %}
+          <span class="form_error">{{ error }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- end form-row -->
+      <button type="submit" class="btn btn-sm btn-success">Save Record</button>
+      <a
+        href="{{ url_for('membas') }}"
+        type="button"
+        class="btn btn-sm btn-primary"
+        >Back to Member Page</a
+      >
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

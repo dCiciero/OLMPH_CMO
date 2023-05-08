@@ -1,0 +1,332 @@
+{% extends 'base.html' %} {% block content %}
+<h5><strong>Financial Records</strong></h5>
+<div class="card">
+  <div class="card-body">
+    <!-- <dl class=" d-flex justify-content-start mb-2" >
+                <dt class="">Global Balance</dt>
+                <dd class="">Balance to date</dd>
+                <dt class="">Collection at Previous meeting</dt>
+                <dd class="">Balance to date</dd>
+            </dl> -->
+    <div>
+      <p class="card-title font-weight-bold mb-2">
+        Total Inflow: <span> ₦ {{ "{:,.2f}".format(accts[2]) }}</span>
+      </p>
+      <p class="card-title font-weight-bold mb-2">
+        Total Outflow: <span> ₦ {{ "{:,.2f}".format(accts[3]) }}</span>
+      </p>
+      <p class="card-title font-weight-bold mb-2">
+        Global Balance: <span> ₦ {{ "{:,.2f}".format(accts[4]) }}</span>
+      </p>
+      <!-- <p>Collection at previous <em>(Date of meeting) </em>meeting: <span># 230,000.00K</span></p> -->
+    </div>
+
+    <ul class="nav nav-tabs" id="financeTab" role="tablist">
+      <!-- <li class="nav-item" role="presentation">
+                  <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
+                </li> -->
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          id="general-tab"
+          data-toggle="tab"
+          href="#general"
+          role="tab"
+          aria-controls="general"
+          aria-selected="false"
+          >General Acct</a
+        >
+      </li>
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          id="individual-tab"
+          data-toggle="tab"
+          href="#individual"
+          role="tab"
+          aria-controls="individual"
+          aria-selected="false"
+          >Individual Acct</a
+        >
+      </li>
+      <li class="nav-item" role="presentation">
+        <a
+          class="nav-link"
+          id="payments-tab"
+          data-toggle="tab"
+          href="#payments"
+          role="tab"
+          aria-controls="payments"
+          aria-selected="false"
+          >Payments</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content" id="bsnTabContent">
+      <!-- <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                    Raw denim you probably haven't heard of them jean shorts Austin. 
+                    Nesciunt tofu stumptown aliqua, retro synth master cleanse. 
+                    Mustache cliche tempor, williamsburg carles vegan helvetica. 
+                    Reprehenderit butcher retro keffiyeh dreamcatcher synth. 
+                </div> -->
+      <div
+        class="tab-pane fade show active"
+        id="general"
+        role="tabpanel"
+        aria-labelledby="general-tab"
+      >
+        <!-- <div class="form-row">
+                        <div class="form-group col">
+                            <input type="text" name="search_individual_acct" id="txt_search_individual_acct"  
+                            class="form-control form-control-sm " placeholder="Type name to search">
+                            
+                        </div>
+                    </div> -->
+        {% if accts %}
+        <div class="table-responsive">
+          <table id="tbl_group_acct" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Inflow</th>
+                <th scope="col">Outflow</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for gen_acc in accts[1]%} {% if gen_acc%}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ "{:,.2f}".format(gen_acc.inflow) }}</td>
+                <td>{{ "{:,.2f}".format(gen_acc.outflow) }}</td>
+                <td>{{ gen_acc.descr }}</td>
+                <td>{{ gen_acc.trans_date.strftime("%d/%m/%Y") }}</td>
+                <td>
+                  {{ "{:,.2f}".format(gen_acc.acct_bal) if gen_acc.acct_bal else
+                  0 }}
+                </td>
+                <!-- <td><a href="#" class="btn btn-primary btn-sm">view</a></td> -->
+              </tr>
+              <p></p>
+              {% endif %} {% endfor%}
+            </tbody>
+          </table>
+        </div>
+        <!--end table-respnsive -->
+        {% endif %}
+      </div>
+      <div
+        class="tab-pane fade"
+        id="individual"
+        role="tabpanel"
+        aria-labelledby="individual-tab"
+      >
+        <div class="form-row">
+          <div class="form-group col">
+            <input
+              type="text"
+              name="search_individual_acct"
+              id="txt_search_individual_acct"
+              class="form-control form-control-sm"
+              placeholder="Type name to search"
+            />
+            <!-- <a href="#" class="search-icon">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </a> -->
+          </div>
+        </div>
+        {% if accts %}
+        <div class="table-responsive">
+          <table id="tbl_members_acct" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Names</th>
+                <th scope="col">Date Joined</th>
+                <th scope="col">Monthly Dues</th>
+                <th scope="col">Annual Dues</th>
+                <th scope="col">Annual Harvest Levy</th>
+                <th scope="col">Insurance</th>
+                <th scope="col">Others</th>
+                <th scope="col">Total Payable (Dues only)</th>
+                <th scope="col">Paid to Date</th>
+                <th scope="col">Outstanding</th>
+                <th scope="col">Remark</th>
+                <th scope="col">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for value in accts[0]%} {#% if key.lower() == 'single' %#} {%
+              if value%}
+              <tr>
+                <td>{{ value[0].id }}</td>
+                <td>{{ value[0].firstname +" "+value[0].lastname }}</td>
+                <td>{{ value[0].datejoined.strftime("%d/%m/%Y") }}</td>
+                <td>{{ "N%.2f"|format(value[1].monthly_dues) }}</td>
+                <td>{{ "N%.2f"|format(value[1].annual_dues) }}</td>
+                <td>{{ "N%.2f"|format(value[1].harvest_levy) }}</td>
+                <td>{{ "N%.2f"|format(value[1].life_policy) }}</td>
+                <td>{{ value[1].others }}</td>
+                <td>{{ "N%.2f"|format(value[1].total_pay) }}</td>
+                <td>{{ "N%.2f"|format(value[1].paid_to_date) }}</td>
+                <td>
+                  {{ value[1].outstanding_bal if value[1].outstanding_bal else 0
+                  }}
+                </td>
+                <td>{{ value[1].remark }}</td>
+                <td><a href="#" class="btn btn-primary btn-sm">view</a></td>
+              </tr>
+              <p></p>
+              {% endif %} {#% endif %#} {% endfor%}
+            </tbody>
+          </table>
+        </div>
+        <!--end table-respnsive -->
+        {% endif %}
+      </div>
+      <div
+        class="tab-pane fade"
+        id="payments"
+        role="tabpanel"
+        aria-labelledby="payments-tab"
+      >
+        {% if payment_form %}
+        <form method="POST" novalidate style="">
+          {{ payment_form.hidden_tag() }}
+          <div class="form-group">
+            {{ payment_form.name.label }}
+            <!-- <select id="drp_state" class="form-control form-control-sm" >
+                                <option selected>Choose...</option>
+                            {#% for member in members %#}
+                                <option value='{#{ member.id }#}' > {#{ member.firstname+" "+(member.midname if member.midname != None else "")+" "+member.lastname }#} </option>
+                            {#% endfor %#}                        
+                            </select> -->
+            {{payment_form.name( class='form-control form-control-sm')}} {% for
+            error in payment_form.name.errors %}
+            <span class="form_error">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <!-- <label for="txt_fname">First Name</label> -->
+              {{payment_form.amount.label}}
+              <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">₦</div>
+                </div>
+                {{payment_form.amount(size=32, class='form-control
+                form-control-sm')}}
+                <div class="input-group-append">
+                  <div class="input-group-text">.00</div>
+                </div>
+              </div>
+              {% for error in payment_form.amount.errors %}
+              <span class="form_error">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="form-group col-md-6">
+              {{payment_form.purpose.label}} {{payment_form.purpose(size=32,
+              class='form-control form-control-sm' )}}
+            </div>
+          </div>
+          <!-- end form-row -->
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              {{payment_form.payment_mode.label}} {{payment_form.payment_mode(
+              class='form-control form-control-sm')}} {% for error in
+              payment_form.payment_mode.errors %}
+              <span class="form_error">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="form-group col-md-4">
+              {{payment_form.payment_type.label}} {{payment_form.payment_type(
+              class='form-control form-control-sm')}} {% for error in
+              payment_form.payment_type.errors %}
+              <span class="form_error">{{ error }}</span>
+              {% endfor %}
+            </div>
+            <div class="form-group col-md-4">
+              {{payment_form.date_paid.label}} {{payment_form.date_paid(size=32,
+              type='date', class='form-control form-control-sm',
+              placeholder='dd/mm/yyyy' )}} {% for error in
+              payment_form.date_paid.errors %}
+              <span class="form_error">{{ error }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          <!-- end form-row -->
+          <div class="form-group col-md-3">
+            <button type="submit" class="btn btn-sm btn-success">
+              Post Record
+            </button>
+          </div>
+        </form>
+        {% endif %}
+        <div class="table-responsive">
+          <div class="form-row">
+            <div class="form-group col">
+              <input
+                type="text"
+                name="search_member_details"
+                id="txt_search_member_details"
+                class="form-control form-control-sm"
+                placeholder="Type name to search"
+              />
+              <!-- <a href="#" class="search-icon">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </a> -->
+            </div>
+          </div>
+          <table
+            id="tbl_member_details"
+            class="table table-sm table-bordered table-hover"
+          >
+            <caption>
+              <small>There are {{ payment_list|length}} members.</small>
+            </caption>
+            <thead class="">
+              <tr>
+                <th>#</th>
+                <th>Full Names</th>
+                <th>Amount</th>
+                <th>Purpose</th>
+                <th>Mode of Payment</th>
+                <th>Date Paid</th>
+              </tr>
+            </thead>
+            {% if payment_list %} {% for payment in payment_list %}
+            <tr>
+              <td>{{ payment[1].id }}</td>
+              <td>
+                {{ payment[0].firstname+" "+(payment[0].midname if
+                payment[0].midname != None else "")+" "+payment[0].lastname }}
+              </td>
+              <td>
+                {{ "{:,.2f}".format(payment[1].amount) if payment[1].amount !=
+                None else ""}}
+              </td>
+              <td>
+                {{ payment[1].purpose if payment[1].purpose != None else "" }}
+              </td>
+              <td>
+                {{ payment[1].mode_of_payment if payment[1].mode_of_payment !=
+                None else "" }}
+              </td>
+              <td>
+                {{ payment[1].date_paid.strftime("%d/%m/%Y") if
+                payment[1].date_paid != None else "" }}
+              </td>
+            </tr>
+            {% endfor %} {% endif %}
+          </table>
+        </div>
+      </div>
+      <!--end tab-pane -->
+    </div>
+  </div>
+  <!--end card-body -->
+</div>
+
+{% endblock %}

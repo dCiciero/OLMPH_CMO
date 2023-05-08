@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %} Payment Listing {{ title }}{% endblock %}
+
+{% block content %}
+<h4>Member Page</h4>
+<div class="form-row">
+    <div class="form-group col-md-6">
+        <input type="text" name="search_member_details" id="txt_search_member_details"  
+        class="form-control form-control-sm " placeholder="Type name to search">
+        <!-- <a href="#" class="search-icon">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </a> -->
+    </div>
+</div>
+{% if member_list %}
+<div class="table-responsive">
+    <caption><a href="{{url_for('payment')}}">Enter Payments/a></caption>
+    <table id="tbl_member_details" class="table table-sm table-bordered table-hover">
+        <caption> <small>There are {{ member_list|length}} members.</small> </caption>
+        <thead class="">
+            <tr>
+                <th>#</th>
+                <th>Full Names</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Date Joined</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        {% for member in member_list %}
+            <tr>
+                <td>{{ member.id }}</td>
+                <td>{{ member.firstname+" "+(member.midname if member.midname != None else "")+" "+member.lastname }}</td>
+                <td>{{ member.phone1 if member.phone1 != None else ""}}</td>
+                <td>{{ member.email if member.email != None else "" }}</td>
+                <td>{{ member.datejoined.strftime("%d/%m/%Y") if member.datejoined != None else ""  }}</td>
+                <td><a href="{{ url_for('edit_memba', id = member.id) }}" class="btn btn-primary btn-sm">view</a></td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+{% else %}
+<div class="text-center">
+    <h4>No record available <small class="text-muted form-text mb-4"><a href="#">Create</a></small></h4>
+</div>
+{% endif %}
+{% endblock %}
